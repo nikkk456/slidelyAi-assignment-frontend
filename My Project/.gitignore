@@ -1,0 +1,45 @@
+# Ignore Visual Studio temporary files, build results, and
+# user-specific files
+# Ignore Visual Studio temporary files, build results, and
+# user-specific files
+.vs/
+
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files
+*.rsuser
+*_i.c
+*_p.c
+*.ncb
+*.sdf
+*.opensdf
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+*.code-workspace
+
+# Others
+.vs/
+.idea/
+*.swp
+*.lock
+*.bak
+*.tmp
