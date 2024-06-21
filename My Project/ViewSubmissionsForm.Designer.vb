@@ -1,5 +1,6 @@
 ﻿Imports Newtonsoft.Json.Linq
 Imports System.Net
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class ViewSubmissionsForm
     Inherits System.Windows.Forms.Form
@@ -31,6 +32,7 @@ Partial Class ViewSubmissionsForm
         Me.txtStopwatchTime = New System.Windows.Forms.TextBox()
         Me.btnPrevious = New RoundedButton()
         Me.btnNext = New RoundedButton()
+        Me.btnDelete = New RoundedButton()
         Me.lblName = New System.Windows.Forms.Label()
         Me.lblEmail = New System.Windows.Forms.Label()
         Me.lblPhoneNum = New System.Windows.Forms.Label()
@@ -146,11 +148,24 @@ Partial Class ViewSubmissionsForm
         Me.btnNext.ForeColor = System.Drawing.Color.White
         AddHandler Me.btnNext.Click, AddressOf Me.btnNext_Click
         '
+        ' btnDelete
+        '
+        Me.btnDelete.Location = New System.Drawing.Point(200, 300)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(120, 23)
+        Me.btnDelete.TabIndex = 7
+        Me.btnDelete.Text = "Delete (CTRL + D)"
+        Me.btnDelete.UseVisualStyleBackColor = True
+        Me.btnDelete.BackColor = System.Drawing.Color.Red
+        Me.btnDelete.ForeColor = System.Drawing.Color.White
+        AddHandler Me.btnDelete.Click, AddressOf Me.btnDelete_Click
+        '
         'ViewSubmissionsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(500, 350)
+        Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.btnNext)
         Me.Controls.Add(Me.btnPrevious)
         Me.Controls.Add(Me.txtStopwatchTime)
@@ -179,6 +194,7 @@ Partial Class ViewSubmissionsForm
     Private WithEvents txtStopwatchTime As TextBox
     Private WithEvents btnPrevious As RoundedButton
     Private WithEvents btnNext As RoundedButton
+    Private WithEvents btnDelete As RoundedButton
     Private WithEvents lblName As Label
     Private WithEvents lblEmail As Label
     Private WithEvents lblPhoneNum As Label
@@ -203,11 +219,17 @@ Partial Class ViewSubmissionsForm
         LoadSubmission(currentIndex)
     End Sub
 
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs)
+        DeleteSubmission(currentIndex)
+    End Sub
+
     Private Sub ViewSubmissionsForm_KeyDown(sender As Object, e As KeyEventArgs)
         If e.Control AndAlso e.KeyCode = Keys.P Then
             btnPrevious.PerformClick()
         ElseIf e.Control AndAlso e.KeyCode = Keys.N Then
             btnNext.PerformClick()
+        ElseIf e.Control AndAlso e.KeyCode = Keys.D Then
+            btnDelete.PerformClick()
         End If
     End Sub
 
@@ -234,6 +256,24 @@ Partial Class ViewSubmissionsForm
         Catch ex As Exception
             ' Handle any errors that occur during the request
             MessageBox.Show("Error loading submission: " & ex.Message)
+        End Try
+    End Sub
+
+    Private Sub DeleteSubmission(index As Integer)
+        Dim url As String = "http://localhost:3000/delete?index=" & index.ToString()
+
+        ' Create a WebClient to make the HTTP request
+        Dim client As New System.Net.WebClient()
+
+        Try
+            ' Send the GET request to delete the submission
+            Dim responseString As String = client.UploadString(url, "DELETE", "")
+
+            ' Reload the current submission after deletion
+            LoadSubmission(currentIndex)
+        Catch ex As Exception
+            ' Handle any errors that occur during the request
+            MessageBox.Show("Error deleting submission: " & ex.Message)
         End Try
     End Sub
 End Class
